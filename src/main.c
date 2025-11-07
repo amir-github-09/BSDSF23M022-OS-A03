@@ -11,7 +11,6 @@ int main() {
     while ((cmdline = read_cmd(PROMPT, stdin)) != NULL) {
         if (cmdline[0] == '\0') { free(cmdline); continue; }
 
-        // Handle !n
         if (cmdline[0] == '!') {
             int n = atoi(cmdline + 1);
             char* prev = get_saved_command(n);
@@ -25,7 +24,6 @@ int main() {
             cmdline = strdup(prev);
         }
 
-        // Save to our own history
         save_command_history(cmdline);
 
         if ((arglist = tokenize(cmdline)) != NULL) {
@@ -36,6 +34,7 @@ int main() {
                 free(arglist[i]);
             free(arglist);
         }
+
         free(cmdline);
     }
 
