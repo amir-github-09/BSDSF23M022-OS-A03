@@ -1,4 +1,5 @@
 
+
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -9,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <signal.h>
 
 #define MAX_LEN 512
 #define MAXARGS 10
@@ -19,5 +21,8 @@
 char* read_cmd(char* prompt, FILE* fp);
 char** tokenize(char* cmdline);
 int execute(char** arglist);
+int handle_builtin(char** arglist);  // new for built-ins
 
 #endif // SHELL_H
+
+
