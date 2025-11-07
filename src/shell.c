@@ -3,7 +3,6 @@
 #include "shell.h"
 
 /* -------------------- MANUAL HISTORY -------------------- */
-
 static char* saved_history[HISTORY_SIZE];
 static int history_count = 0;
 static int history_next = 0;
@@ -33,28 +32,28 @@ char* get_saved_command(int n) {
 }
 
 /* -------------------- READLINE INPUT -------------------- */
-
 char* read_cmd(char* prompt, FILE* fp) {
     (void)fp;
     char* line = readline(prompt);
 
     if (!line) return NULL;  // Ctrl-D
 
-    // Add to GNU Readline internal history (for ↑/↓ arrows)
     if (strlen(line) > 0)
-        add_history(line);  // <— This is from <readline/history.h>
+        add_history(line); // from GNU Readline
 
     return line;
 }
 
-/* -------------------- TOKENIZE (unchanged) -------------------- */
+/* -------------------- TOKENIZER -------------------- */
 char** tokenize(char* cmdline) {
     if (cmdline == NULL || cmdline[0] == '\0') return NULL;
+
     char** arglist = (char**) malloc(sizeof(char*) * (MAXARGS + 1));
     for (int i = 0; i < MAXARGS + 1; i++) {
         arglist[i] = (char*) malloc(sizeof(char) * ARGLEN);
         bzero(arglist[i], ARGLEN);
     }
+
     char* cp = cmdline;
     int argnum = 0;
     while (*cp != '\0' && argnum < MAXARGS) {
@@ -67,16 +66,18 @@ char** tokenize(char* cmdline) {
         arglist[argnum][len] = '\0';
         argnum++;
     }
+
     if (argnum == 0) {
         for (int i = 0; i < MAXARGS + 1; i++) free(arglist[i]);
         free(arglist);
         return NULL;
     }
+
     arglist[argnum] = NULL;
     return arglist;
 }
 
-/* -------------------- BUILTINS -------------------- */
+/* -------------------- BUILT-IN COMMANDS -------------------- */
 int handle_builtin(char** arglist) {
     if (!arglist || !arglist[0]) return 0;
 
@@ -95,12 +96,25 @@ int handle_builtin(char** arglist) {
         return 1;
     }
     else if (strcmp(arglist[0], "help") == 0) {
-        printf("\nBuilt-ins: cd, exit, help, history, !n\n\n");
+        printf("\n--- myshell Help ---\n");
+        printf("Built-ins:\n");
+        printf("  cd <dir>     - change directory\n");
+        printf("  exit         - exit the shell\n");
+        printf("  help         - show this help\n");
+        printf("  history      - show history\n");
+        printf("  !n           - rerun nth command\n");
+        printf("  jobs         - list background jobs\n");
+        printf("---------------------\n\n");
         return 1;
     }
     else if (strcmp(arglist[0], "history") == 0) {
         print_saved_history();
         return 1;
     }
+    else if (strcmp(arglist[0], "jobs") == 0) {
+        print_jobs();
+        return 1;
+    }
+
     return 0;
 }
