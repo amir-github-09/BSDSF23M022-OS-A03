@@ -17,12 +17,18 @@
 #define ARGLEN 30
 #define PROMPT "FCIT> "
 
-// Function prototypes
+// ===== Feature 3: History settings =====
+#define HISTORY_SIZE 20  // store last 20 commands
+
+// ===== Function prototypes =====
 char* read_cmd(char* prompt, FILE* fp);
 char** tokenize(char* cmdline);
 int execute(char** arglist);
-int handle_builtin(char** arglist);  // new for built-ins
+int handle_builtin(char** arglist);
+
+// Feature 3: history management
+void add_history(const char* cmd);
+void print_history(void);
+char* get_history_command(int n);
 
 #endif // SHELL_H
-
-
