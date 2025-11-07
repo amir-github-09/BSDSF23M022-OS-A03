@@ -1,5 +1,6 @@
 
 
+
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -12,23 +13,24 @@
 #include <errno.h>
 #include <signal.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #define MAX_LEN 512
 #define MAXARGS 10
 #define ARGLEN 30
 #define PROMPT "FCIT> "
+#define HISTORY_SIZE 20
 
-// ===== Feature 3: History settings =====
-#define HISTORY_SIZE 20  // store last 20 commands
-
-// ===== Function prototypes =====
+// Function prototypes
 char* read_cmd(char* prompt, FILE* fp);
 char** tokenize(char* cmdline);
 int execute(char** arglist);
 int handle_builtin(char** arglist);
 
-// Feature 3: history management
-void add_history(const char* cmd);
-void print_history(void);
-char* get_history_command(int n);
+// Custom history functions (renamed)
+void save_command_history(const char* cmd);
+void print_saved_history(void);
+char* get_saved_command(int n);
 
-#endif // SHELL_H
+#endif
