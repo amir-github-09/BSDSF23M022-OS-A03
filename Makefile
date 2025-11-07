@@ -1,9 +1,9 @@
 
 
-# ========== Makefile for myshell ==========
+# ========== Makefile for myshell (Feature 2) ==========
 
 CC       = gcc
-CFLAGS   = -Iinclude
+CFLAGS   = -Wall -Wextra -g -Iinclude
 SRC      = src/main.c src/shell.c src/execute.c
 OBJ      = obj/main.o obj/shell.o obj/execute.o
 BIN      = bin/myshell
@@ -13,6 +13,7 @@ all: $(BIN)
 
 # Build final binary
 $(BIN): $(OBJ)
+	@mkdir -p bin
 	$(CC) $(OBJ) -o $(BIN)
 
 # Compile object files
@@ -25,6 +26,4 @@ clean:
 	rm -rf obj/*.o $(BIN)
 
 .PHONY: all clean
-
-
 

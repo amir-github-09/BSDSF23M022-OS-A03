@@ -1,22 +1,23 @@
 
-
 #include "shell.h"
 
 int execute(char* arglist[]) {
     int status;
-    int cpid = fork();
+    pid_t cpid = fork();
 
     switch (cpid) {
         case -1:
             perror("fork failed");
             exit(1);
-        case 0: // Child process
+
+        case 0: // --- Child Process ---
+            signal(SIGINT, SIG_DFL);  // restore Ctrl+C default
             execvp(arglist[0], arglist);
-            perror("Command not found"); // This line runs only if execvp fails
+            perror("Command not found");
             exit(1);
-        default: // Parent process
+
+        default: // --- Parent Process ---
             waitpid(cpid, &status, 0);
-            // printf("Child pid:%d exited with status %d\n", cpid, status >> 8);
             return 0;
     }
 }
