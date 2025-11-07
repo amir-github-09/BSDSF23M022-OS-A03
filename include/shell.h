@@ -1,6 +1,5 @@
 
 
-
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -12,7 +11,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
-
+#include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -22,13 +21,11 @@
 #define PROMPT "FCIT> "
 #define HISTORY_SIZE 20
 
-// Function prototypes
+// prototypes
 char* read_cmd(char* prompt, FILE* fp);
 char** tokenize(char* cmdline);
 int execute(char** arglist);
 int handle_builtin(char** arglist);
-
-// Custom history functions (renamed)
 void save_command_history(const char* cmd);
 void print_saved_history(void);
 char* get_saved_command(int n);
