@@ -1,5 +1,7 @@
 
 
+
+
 #include "shell.h"
 
 int main() {
@@ -20,10 +22,8 @@ int main() {
             // Trim leading/trailing spaces
             while (*command == ' ') command++;
             size_t len = strlen(command);
-            while (len > 0 && (command[len - 1] == ' ' || command[len - 1] == '\n')) {
-                command[len - 1] = '\0';
-                len--;
-            }
+            while (len > 0 && (command[len - 1] == ' ' || command[len - 1] == '\n'))
+                command[--len] = '\0';
 
             // Handle !n (history)
             if (command[0] == '!') {
@@ -46,9 +46,12 @@ int main() {
 
             // 3️⃣ Detect background execution (&)
             int background = 0;
-            if (strchr(command, '&')) {
-                background = 1;
-                command[strlen(command) - 1] = '\0'; // remove &
+            for (int i = strlen(command) - 1; i >= 0; i--) {
+                if (command[i] == '&') {
+                    background = 1;
+                    command[i] = '\0';
+                } else if (command[i] != ' ' && command[i] != '\t')
+                    break;
             }
 
             if ((arglist = tokenize(command)) != NULL) {

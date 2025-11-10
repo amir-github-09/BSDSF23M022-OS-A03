@@ -1,5 +1,7 @@
 
 
+
+
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -16,8 +18,8 @@
 #include <readline/history.h>
 
 #define MAX_LEN 512
-#define MAXARGS 10
-#define ARGLEN 30
+#define MAXARGS 50
+#define ARGLEN 128
 #define PROMPT "FCIT> "
 #define HISTORY_SIZE 20
 #define MAX_JOBS 50
